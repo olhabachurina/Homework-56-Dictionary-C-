@@ -6,7 +6,10 @@ FileDictionaryProvider fileProvider = GetFileProvider();
 
 XmlDictionarySerializer xmlSerializer = new XmlDictionarySerializer();
 DictionaryOperations operations = new DictionaryOperations(dictionary, fileProvider, xmlSerializer);
-List<string> translations; 
+List<string> translations;
+string input = "Sample123";
+string pattern = @"^[A-Za-z0-9]+$";
+
 static FileDictionaryProvider GetFileProvider()
 {
     return new FileDictionaryProvider("dictionary.txt");
@@ -57,14 +60,14 @@ while (true)
             }
             Console.Write("Enter the translation(s) (comma-separated): ");
             string translationsInput = Console.ReadLine();
-            translations = translationsInput.Split(',').Select(t => t.Trim()).ToList(); 
+            translations = translationsInput.Split(',').Select(t => t.Trim()).ToList();
             operations.AddWordAndTranslation(word, translations);
             Console.WriteLine("Word and translation added successfully.");
             break;
         case 3:
             Console.Write("Enter the word to replace: ");
             string wordToReplace = Console.ReadLine();
-            if (dictionary.GetTranslations(wordToReplace).Count() == 0) 
+            if (dictionary.GetTranslations(wordToReplace).Count() == 0)
             {
                 Console.WriteLine($"The word '{wordToReplace}' does not exist in the dictionary.");
                 break;
@@ -80,7 +83,7 @@ while (true)
         case 4:
             Console.Write("Enter the word to delete: ");
             string wordToDelete = Console.ReadLine();
-            if (dictionary.GetTranslations(wordToDelete).Count() == 0) 
+            if (dictionary.GetTranslations(wordToDelete).Count() == 0)
             {
                 Console.WriteLine($"The word '{wordToDelete}' does not exist in the dictionary.");
             }
@@ -94,7 +97,7 @@ while (true)
             Console.Write("Enter the word to search: ");
             string wordToSearch = Console.ReadLine();
             translations = operations.SearchTranslation(wordToSearch);
-            if (translations.Count() > 0) 
+            if (translations.Count() > 0)
             {
                 Console.WriteLine($"Translations for '{wordToSearch}': {string.Join(", ", translations)}");
             }
@@ -112,5 +115,13 @@ while (true)
         case 7:
             Environment.Exit(0);
             break;
+    }
+    if (RegexHelper.IsMatch(input, pattern))
+    {
+        Console.WriteLine("Matches regular expression.");
+    }
+    else
+    {
+        Console.WriteLine("Does not match regular expression.");
     }
 }
